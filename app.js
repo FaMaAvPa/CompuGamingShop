@@ -1,5 +1,5 @@
 // Variables globales
-var productList = [
+let productList = [
   {
     name: 'Notebook Gamer',
     price: 1159314,
@@ -12,7 +12,7 @@ var productList = [
   }
 ];
 
-var cartItems = [];
+let cartItems = [];
 
 // Cargar la lista de productos al iniciar la página
 window.addEventListener('DOMContentLoaded', function() {
@@ -24,28 +24,28 @@ function loadProductList() {
   // Simulamos una llamada a una API o base de datos para obtener la lista de productos
   // En este caso, utilizamos la lista predefinida en la variable productList
 
-  var productContainer = document.getElementById('product-list');
+  let productContainer = document.getElementById('product-list');
   productContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar los productos
 
   // Recorrer la lista de productos y agregar cada uno al DOM
   productList.forEach(function(product, index) {
-    var productItem = document.createElement('div');
+    let productItem = document.createElement('div');
     productItem.classList.add('product-item');
 
-    var productImage = document.createElement('img');
+    let productImage = document.createElement('img');
     productImage.src = product.image;
     productImage.alt = product.name;
     productItem.appendChild(productImage);
 
-    var productName = document.createElement('h3');
+    let productName = document.createElement('h3');
     productName.textContent = product.name;
     productItem.appendChild(productName);
 
-    var productPrice = document.createElement('p');
+    let productPrice = document.createElement('p');
     productPrice.textContent = '$' + product.price.toFixed(2);
     productItem.appendChild(productPrice);
 
-    var buyButton = document.createElement('button');
+    let buyButton = document.createElement('button');
     buyButton.classList.add('buy-button');
     buyButton.textContent = 'Comprar';
     buyButton.addEventListener('click', function() {
@@ -65,12 +65,12 @@ function addToCart(product) {
 
 // Actualizar el carrito de compras en el DOM
 function updateCart() {
-  var cartItemsList = document.getElementById('cart-items');
+  let cartItemsList = document.getElementById('cart-items');
   cartItemsList.innerHTML = ''; // Limpiar la lista antes de agregar los elementos
 
   // Recorrer los productos en el carrito y agregar cada uno al DOM
   cartItems.forEach(function(item) {
-    var cartItem = document.createElement('li');
+    let cartItem = document.createElement('li');
     cartItem.textContent = item.name;
     cartItemsList.appendChild(cartItem);
   });
@@ -81,7 +81,7 @@ function updateCart() {
   }, 0);
 
   // Actualizar el total en el DOM
-  var totalPriceElement = document.getElementById('total-price');
+  let totalPriceElement = document.getElementById('total-price');
   totalPriceElement.textContent = 'Total: $' + totalPrice.toFixed(2);
 }
 
