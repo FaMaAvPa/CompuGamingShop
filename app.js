@@ -1,72 +1,94 @@
-/// Declaración de variables
-let productos = [
-    {nombre: "Laptop", precio: 1000},
-    {nombre: "Monitor", precio: 200},
-    {nombre: "Mouse", precio: 30},
-    {nombre: "Teclado", precio: 50},
-  ];
-  let carrito = [];
-  let continuarComprando = true;
-  
-  // Funciones de orden superior
-  const sumarPrecios = (total, producto) => total + producto.precio;
-  const calcularTotal = (carrito) => carrito.reduce(sumarPrecios, 0);
-  
-  // Función para mostrar el carrito de compras
-  const mostrarCarrito = () => {
-    let mensaje = "Carrito de compras:\n";
-    mensaje += carrito.map(producto => producto.nombre + " - $" + producto.precio).join("\n");
-    mensaje += "\n\nTotal: $" + calcularTotal(carrito);
-    console.log(mensaje);
-    alert(mensaje)
-  }                            
-  
-  // Función para buscar un producto por nombre
-  const buscarProducto = (nombre) => {
-    return productos.find(producto => producto.nombre.toLowerCase() === nombre.toLowerCase());
+// Variables globales
+var productList = [
+  {
+    name: 'Notebook Gamer',
+    price: 1159314,
+    image: './img/NotebookGamer.png'
+  },
+  {
+    name: 'Procesador AMD Ryzen 5 3600',
+    price: 137826,
+    image: './img/AMDRyzen5.png'
   }
-  
-  // Ciclo para continuar comprando
-  while (continuarComprando) {
-    // Mostrar lista de productos
-    console.log("Lista de productos:");
-    productos.forEach((producto, index) => {
-      console.log((index + 1) + ". " + producto.nombre + " - $" + producto.precio);
-    });
-    
-    // Preguntar al usuario qué producto desea agregar al carrito
-    const nombreProducto = prompt("Ingrese el nombre del producto que desea agregar al carrito: \n Laptop \n Monitor \n Mouse \n Teclado");
-  
-    // Buscar el producto en la lista de productos
-    const producto = buscarProducto(nombreProducto);
-  
-    if (producto) {
-      // Agregar el producto al carrito
-      carrito.push(producto);
-      console.log(producto.nombre + " agregado al carrito.");
-  
-      // Preguntar al usuario si desea seguir comprando
-      const continuar = prompt("¿Desea agregar otro producto al carrito? (S/N)").toLowerCase();
-      continuarComprando = continuar === "s" || continuar === "si";
-    } else {
-      console.log("El producto no se encuentra en la lista.");
-    }
-  }
-  
-  // Mostrar el carrito de compras
-  mostrarCarrito();
-  
-  // Filtrar los productos en el carrito por un rango de precios
-  const filtrarPorPrecio = (carrito, min, max) => {
-    return carrito.filter(producto => producto.precio >= min && producto.precio <= max);
-  }
-  
-  // Filtrar productos en el carrito con un precio entre 100 y 500
-  const productosFiltrados = filtrarPorPrecio(carrito, 100, 500);
-  
-  // Mostrar los productos filtrados
-  console.log("Productos filtrados:");
-  productosFiltrados.forEach(producto => console.log(producto.nombre + " - $" + producto.precio));
-  
- 
+];
 
+var cartItems = [];
+
+// Cargar la lista de productos al iniciar la página
+window.addEventListener('DOMContentLoaded', function() {
+  loadProductList();
+});
+
+// Cargar la lista de productos desde el Storage
+function loadProductList() {
+  // Simulamos una llamada a una API o base de datos para obtener la lista de productos
+  // En este caso, utilizamos la lista predefinida en la variable productList
+
+  var productContainer = document.getElementById('product-list');
+  productContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar los productos
+
+  // Recorrer la lista de productos y agregar cada uno al DOM
+  productList.forEach(function(product, index) {
+    var productItem = document.createElement('div');
+    productItem.classList.add('product-item');
+
+    var productImage = document.createElement('img');
+    productImage.src = product.image;
+    productImage.alt = product.name;
+    productItem.appendChild(productImage);
+
+    var productName = document.createElement('h3');
+    productName.textContent = product.name;
+    productItem.appendChild(productName);
+
+    var productPrice = document.createElement('p');
+    productPrice.textContent = '$' + product.price.toFixed(2);
+    productItem.appendChild(productPrice);
+
+    var buyButton = document.createElement('button');
+    buyButton.classList.add('buy-button');
+    buyButton.textContent = 'Comprar';
+    buyButton.addEventListener('click', function() {
+      addToCart(product);
+    });
+    productItem.appendChild(buyButton);
+
+    productContainer.appendChild(productItem);
+  });
+}
+
+// Agregar un producto al carrito de compras
+function addToCart(product) {
+  cartItems.push(product);
+  updateCart();
+}
+
+// Actualizar el carrito de compras en el DOM
+function updateCart() {
+  var cartItemsList = document.getElementById('cart-items');
+  cartItemsList.innerHTML = ''; // Limpiar la lista antes de agregar los elementos
+
+  // Recorrer los productos en el carrito y agregar cada uno al DOM
+  cartItems.forEach(function(item) {
+    var cartItem = document.createElement('li');
+    cartItem.textContent = item.name;
+    cartItemsList.appendChild(cartItem);
+  });
+
+  // Calcular el total de la compra
+  var totalPrice = cartItems.reduce(function(acc, item) {
+    return acc + item.price;
+  }, 0);
+
+  // Actualizar el total en el DOM
+  var totalPriceElement = document.getElementById('total-price');
+  totalPriceElement.textContent = 'Total: $' + totalPrice.toFixed(2);
+}
+
+// Pagar los productos en el carrito
+document.getElementById('checkout-button').addEventListener('click', function() {
+  // Simulamos una función de pago
+  // En este caso, simplemente vaciamos el carrito
+  cartItems = [];
+  updateCart();
+});
